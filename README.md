@@ -9,7 +9,6 @@ We present code and data on "A novel deep learning model for the identification 
 4. "CAM_image" was used to obtain the results of the study in Figure 5. After acquiring individual CAM images of each cancer type by adjusting only the network type and file path, the average CAM image was obtained using the arithmetic mean.
 5. "Function"
 
-Files in "Function" are essential functions scripts in progressing code and can only be used by adding them to the MATLAB path.
-
+The files in "Function" are required function scripts and have been used in addition to the MATLAB path.
 
 
