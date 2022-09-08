@@ -77,14 +77,14 @@ dsTest = augmentedImageDatastore(imageSize,imds_Test,'ColorPreprocessing','rgb2g
 accuracy = mean(YPred == imds_Test.Labels);
 confMat = confusionmat(imds_Test.Labels,YPred);
 for i =1:size(confMat,1)
- precision(i)=confMat(i,i)/sum(confMat(i,:));
+ recall(i)=confMat(i,i)/sum(confMat(i,:));
 end
-precision(isnan(precision))=[];
-Precision=sum(precision)/size(confMat,1);
-for i =1:size(confMat,1)
- recall(i)=confMat(i,i)/sum(confMat(:,i));
-end
+recall(isnan(recall))=[];
 Recall=sum(recall)/size(confMat,1);
-F_score=2*Recall*Precision/(Precision+Recall);
+for i =1:size(confMat,1)
+ precision(i)=confMat(i,i)/sum(confMat(:,i));
+end
+Precision=sum(precision)/size(confMat,1);
+F_score=2*Precision*Recall/(Recall+Precision);
 
 multiclass_metrics_common(confMat)
