@@ -1,0 +1,66 @@
+library(tidyverse)
+library(caret)
+library(tidyverse)    # data manipulation and visualization
+library(kernlab)      # SVM methodology
+library(e1071)        # SVM methodology
+library(ISLR)         # contains example data set "Khan"
+library(RColorBrewer) # customized coloring of plots
+
+
+
+###Support Vector Machine (SVM)###
+
+Train_expression_ver1=read.csv('D:/raw_count_TCGA/1462TF_index_matching/Trainver5_machining_data.csv', header = T) ###Trainver1-5
+Train_values<-Train_expression_ver1[,2:1463]
+Train_group<-Train_expression_ver1$Labeling
+
+Train_trainIndex <- createDataPartition(Train_group, p = 1, list = FALSE)
+
+Train_Train_X <- Train_values[Train_trainIndex,]
+Train_Train_Y<-factor(Train_group[Train_trainIndex])
+
+Train_Train_X$Train_group<-Train_Train_Y
+
+Train_svm_1<-train(Train_group~., data = Train_Train_X, method="svmRadial")
+
+Train_svmClasses <- predict(Train_svm_1, newdata = Train_Train_X)
+confusionMatrix(data = Train_svmClasses, Train_Train_X$Train_group,mode="everything",positive="1")
+
+str(Train_Train_X)
+
+Validation_expression_ver1=read.csv('D:/raw_count_TCGA/1462TF_index_matching/Validationver5_machining_data.csv', header = T) ###Validationver1-5 
+
+Train1_validation_values<-Validation_expression_ver1[,2:1463]
+Train1_validation_group<-Validation_expression_ver1$Labeling
+
+Train_valdation_Y<-factor(Train1_validation_group)
+
+Train1_validation_values$Train1_validation_group<-Train_valdation_Y
+
+Validation_svmClasses <- predict(Train_svm_1, newdata = Train1_validation_values)
+confusionMatrix(data = Validation_svmClasses, Train1_validation_values$Train1_validation_group,mode="everything",positive="1")
+
+
+Test_gene_expression=read.csv('D:/raw_count_TCGA/ICGC/symbol_change/1462_index_matching/Test_machining_data.csv', header = T)
+
+Test_value <- Test_gene_expression[,2:1463]
+Test_group <- Test_gene_expression$Labeling
+
+Trin_Test_Y<-factor(Test_group)
+Test_value$Test_group<-Trin_Test_Y
+
+
+Test_svmClasses <- predict(Train_svm_1, newdata = Test_value)
+confusionMatrix(data = Test_svmClasses, Test_value$Test_group,mode="everything",positive="1")
+
+
+Trin_svm_1$levels
+
+svm_train_predictions <- as.numeric(predict(Train_svm_1, newdata=Train_Train_X))
+multiclass.roc(Train_Train_X$Train_group, svm_train_predictions)
+
+svm_validation_predictions <- as.numeric(predict(Train_svm_1, newdata=Train1_validation_values))
+multiclass.roc(Train1_validation_values$Train1_validation_group, svm_validation_predictions)
+
+svm_Test_predictions <- as.numeric(predict(Train_svm_1, newdata=Test_value))
+multiclass.roc(Test_value$Test_group, svm_Test_predictions)
