@@ -86,3 +86,5 @@ for i =1:size(confMat,1)
 end
 Recall=sum(recall)/size(confMat,1);
 F_score=2*Recall*Precision/(Precision+Recall);
+
+multiclass_metrics_common(confMat)
