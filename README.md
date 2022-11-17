@@ -1,6 +1,6 @@
 # DeepCIA
 ###
-We present code and data on "A novel deep learning model for the identification of cancer types using class activation mapping via transcription factor expression".
+We present code and data on "DeepCIA: a novel Deep-learning model for Cancer type Identification using class Activation map via transcription factor expression".
 
 #####
 1. TCGA and ICGC files have "Code" and "Preprocessed Data" folders. "Code" presents R codes and MATLAB codes for download and data preprocessing to individual cancer types. And "Preprocessed Data" provides a preprocessed ".csv file".
